@@ -1,0 +1,10 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.dependency.packagePresentation": "flat",
+    "java.project.explorer.showNonJavaResources": true,
+    "java.dependency.syncWithFolderExplorer": true,
+    "cSpell.words": [
+        "minecraftforge"
+    ]
+}

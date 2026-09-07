@@ -1,0 +1,19 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            // MinecraftForge 的 Maven 仓库
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+        maven { 
+            // ParchmentMC 的 Maven 仓库 https://parchmentmc.org/docs/getting-started
+            name = 'ParchmentMC'
+            url = 'https://maven.parchmentmc.org' 
+        }
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.7.0'
+}
