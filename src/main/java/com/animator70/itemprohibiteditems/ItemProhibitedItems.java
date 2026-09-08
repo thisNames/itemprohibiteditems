@@ -1,9 +1,9 @@
 package com.animator70.itemprohibiteditems;
 
-import com.animator70.itemprohibiteditems.config.ModConfig;
-import com.animator70.itemprohibiteditems.config.WearableConfig;
-
 import net.minecraftforge.fml.common.Mod;
+
+import com.animator70.itemprohibiteditems.config.ItemConfig;
+import com.animator70.itemprohibiteditems.config.WearableConfig;
 
 /**
  * 物品禁用机制 (ItemProhibitedItems) 主入口
@@ -14,11 +14,12 @@ import net.minecraftforge.fml.common.Mod;
 @Mod(ItemProhibitedItems.MOD_ID)
 public class ItemProhibitedItems {
 
+    // 模组 ID
     public static final String MOD_ID = "itemprohibiteditems";
 
     public ItemProhibitedItems() {
         // 注册配置文件：物品
-        ModConfig.register();
+        ItemConfig.register();
         // 注册配置文件：可穿戴装备
         WearableConfig.register();
     }

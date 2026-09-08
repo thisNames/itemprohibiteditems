@@ -1,14 +1,11 @@
 package com.animator70.itemprohibiteditems.event;
 
-import com.animator70.itemprohibiteditems.ItemProhibitedItems;
-import com.animator70.itemprohibiteditems.config.ModConfig;
-import com.animator70.itemprohibiteditems.config.WearableConfig;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGuiEvent;
@@ -17,6 +14,10 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+
+import com.animator70.itemprohibiteditems.ItemProhibitedItems;
+import com.animator70.itemprohibiteditems.config.ItemConfig;
+import com.animator70.itemprohibiteditems.config.WearableConfig;
 
 /**
  * 客户端侧拦截（仅 Dist.CLIENT 加载，挂在 FORGE bus）。
@@ -38,11 +39,10 @@ import net.minecraftforge.fml.common.Mod;
  * {@link InputEvent.InteractionKeyMappingTriggered}（仅攻击键）取消，主手被禁物品时挥臂与伤害都不发生。
  * 
  * 提示信息在 {@link RenderGuiEvent.Post} 里以屏幕中间的红字短暂渲染。
- * 服务端权威兜底见 {@link BanEventHandler}（客户端即便直发包也会被服务端再次拦截）
+ * 服务端权威兜底见 {@link ItemBanEventHandler}（客户端即便直发包也会被服务端再次拦截）
  */
 @Mod.EventBusSubscriber(modid = ItemProhibitedItems.MOD_ID, value = Dist.CLIENT)
 public final class BanClientHandler {
-
     // 屏幕中间红字提示停留时长（毫秒）。每次尝试被拦都会刷新计时
     private static final long DISPLAY_MS = 1500L;
 
@@ -56,8 +56,7 @@ public final class BanClientHandler {
     private static final int RED_COLOR = 0xFFFF0000;
 
     // 兜底提示文本（普通禁用与可穿戴禁用各自配置项为空时的默认值）
-    private static final String DEFAULT_MSG = "\u4f60\u65e0\u6cd5\u4f7f\u7528\u6b64\u7269\u54c1!";
-    private static final String DEFAULT_WEARABLE_MSG = "\u4f60\u65e0\u6cd5\u7a7f\u6234\u6b64\u7269\u54c1!";
+    private static final String DEFAULT_MSG = "NoPermission";
 
     private BanClientHandler() {
     }
@@ -67,6 +66,7 @@ public final class BanClientHandler {
      */
     @SubscribeEvent
     public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+        // 仅客户端加载
         if (event.getSide() != LogicalSide.CLIENT) {
             return;
         }
@@ -74,10 +74,11 @@ public final class BanClientHandler {
         ItemStack stack = event.getItemStack();
 
         if (!stack.isEmpty() && event.isCancelable()) {
-            if (BanEventHandler.isBannedItem(stack)) {
+            if (ItemBanEventHandler.isBannedItem(stack)) {
+                // 被禁物品：右键即试图使用，取消。
                 event.setCanceled(true);
                 armOverlayDefault();
-            } else if (WearableConfig.isBannedEquipable(stack)) {
+            } else if (WearableBanHandler.isBannedEquipable(stack)) {
                 // 被禁可穿戴物：右键即试图穿上，取消（走 ArmorItem.use 的换装不会发生）。
                 event.setCanceled(true);
                 armOverlayWearable();
@@ -99,7 +100,7 @@ public final class BanClientHandler {
         ItemStack stack = event.getItemStack();
 
         // 被禁物品：取消使用，不播放动画
-        if (!stack.isEmpty() && BanEventHandler.isBannedItem(stack) && event.getUseItem() != Event.Result.DENY) {
+        if (!stack.isEmpty() && ItemBanEventHandler.isBannedItem(stack) && event.getUseItem() != Event.Result.DENY) {
             event.setUseItem(Event.Result.DENY);
             armOverlayDefault();
         }
@@ -122,7 +123,7 @@ public final class BanClientHandler {
 
         ItemStack stack = player.getMainHandItem();
 
-        if (stack.isEmpty() || !BanEventHandler.isBannedItem(stack)) {
+        if (stack.isEmpty() || !ItemBanEventHandler.isBannedItem(stack)) {
             return;
         }
 
@@ -135,7 +136,7 @@ public final class BanClientHandler {
      * 把「屏幕中间红字」提示武装起来（普通「使用」禁用消息）。
      */
     private static void armOverlayDefault() {
-        String text = ModConfig.COMMON.banMessage.get();
+        String text = ItemConfig.COMMON.banMessage.get();
 
         if (text == null || text.isEmpty()) {
             text = DEFAULT_MSG;
@@ -151,7 +152,7 @@ public final class BanClientHandler {
         String text = WearableConfig.WEARABLE.wearableBanMessage.get();
 
         if (text == null || text.isEmpty()) {
-            text = DEFAULT_WEARABLE_MSG;
+            text = DEFAULT_MSG;
         }
 
         armOverlayRaw(text);

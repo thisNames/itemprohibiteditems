@@ -13,10 +13,8 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.List;
-
 import com.animator70.itemprohibiteditems.ItemProhibitedItems;
-import com.animator70.itemprohibiteditems.config.ModConfig;
+import com.animator70.itemprohibiteditems.config.ItemConfig;
 
 /**
  * 物品禁用机制的运行期事件处理（挂在 FORGE bus）。
@@ -36,9 +34,8 @@ import com.animator70.itemprohibiteditems.config.ModConfig;
  * 提示信息（屏幕中间红字）由 {@code BanClientHandler} 在客户端渲染，本类不再发消息。
  */
 @Mod.EventBusSubscriber(modid = ItemProhibitedItems.MOD_ID)
-public final class BanEventHandler {
-
-    private BanEventHandler() {
+public final class ItemBanEventHandler {
+    private ItemBanEventHandler() {
     }
 
     /**
@@ -96,7 +93,8 @@ public final class BanEventHandler {
     /**
      * 兜底：若玩家正在使用的物品已进入黑名单（使用途中配置变更等），强制终止使用。
      */
-    @SubscribeEvent
+    // @SubscribeEvent
+    @Deprecated
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.side != LogicalSide.SERVER || event.phase != TickEvent.Phase.END) {
             return;
@@ -113,40 +111,31 @@ public final class BanEventHandler {
         }
     }
 
-    /** 判断物品是否处于禁用状态且功能开启。供本类及 {@link BanClientHandler} 复用。 */
-    static boolean isBannedItem(ItemStack stack) {
-        if (!ModConfig.COMMON.banEnabled.get()) {
+    /**
+     * 判断物品是否处于禁用状态且功能开启。
+     * 供本类及 {@link BanClientHandler} 复用。
+     */
+    public static boolean isBannedItem(ItemStack stack) {
+        // 功能未开启，则跳过
+        if (!ItemConfig.isEnabled) {
             return false;
         }
 
-        List<? extends String> banned = ModConfig.COMMON.bannedItems.get();
-
-        if (banned == null || banned.isEmpty()) {
+        // 黑名单为空，则跳过
+        if (ItemConfig.bannedListCache.isEmpty()) {
             return false;
         }
 
+        // 获取物品
         Item item = stack.getItem();
-
+        // 从注册表里获取对应的物品
         ResourceLocation key = ForgeRegistries.ITEMS.getKey(item);
 
+        // 如果物品没有注册表项，则跳过
         if (key == null) {
             return false;
         }
 
-        String full = key.toString();
-
-        for (String entry : banned) {
-            if (entry == null) {
-                continue;
-            }
-
-            String e = entry.trim();
-
-            if (e.equals(full) || e.equalsIgnoreCase("minecraft:" + key.getPath())) {
-                return true;
-            }
-        }
-
-        return false;
+        return ItemConfig.bannedListCache.contains(key.toString());
     }
 }
