@@ -20,21 +20,51 @@ public final class ReloadModConfig {
     private ReloadModConfig() {
     }
 
-    // 注册指令的方法
+    /**
+     * 注册命令
+     */
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
 
+        // 重新加载配置
         dispatcher.register(Commands
                 // 主指令名称
                 .literal(ItemProhibitedItems.MOD_ID)
                 // 子指令
-                .then(Commands.literal("reload")
+                .then(Commands
+                        .literal("reload")
                         // 设置权限
                         .requires(source -> source.hasPermission(2))
                         // 执行逻辑
                         .executes(context -> {
                             return ModConfig.reloadingConfig(context);
+                        })));
+
+        // 显示物品黑名单
+        dispatcher.register(Commands
+                // 主指令名称
+                .literal(ItemProhibitedItems.MOD_ID)
+                // 子指令
+                .then(Commands
+                        .literal("items")
+                        // 设置权限
+                        .requires(source -> source.hasPermission(2))
+                        .executes(context -> {
+                            return ModConfig.showItemBanList(context);
+                        })));
+
+        // 显示装备黑名单
+        dispatcher.register(Commands
+                // 主指令名称
+                .literal(ItemProhibitedItems.MOD_ID)
+                // 子指令
+                .then(Commands
+                        .literal("wearables")
+                        // 设置权限
+                        .requires(source -> source.hasPermission(2))
+                        .executes(context -> {
+                            return ModConfig.showWearableBanList(context);
                         })));
     }
 }

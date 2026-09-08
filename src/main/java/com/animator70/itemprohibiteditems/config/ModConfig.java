@@ -26,4 +26,42 @@ public final class ModConfig {
 
         return 1;
     }
+
+    /**
+     * 显示物品黑名单
+     */
+    public static int showItemBanList(CommandContext<CommandSourceStack> context) {
+        // 遍历黑名单
+        ItemConfig.bannedListCache.forEach(item -> {
+            context.getSource().sendSuccess(
+                    () -> Component.literal(item.toString()),
+                    true);
+        });
+
+        // 显示数量
+        context.getSource().sendSuccess(
+                () -> Component.literal("item count:" + ItemConfig.bannedListCache.size()),
+                true);
+
+        return 1;
+    }
+
+    /**
+     * 显示装备黑名单
+     */
+    public static int showWearableBanList(CommandContext<CommandSourceStack> context) {
+        // 遍历黑名单
+        WearableConfig.bannedListCache.forEach(item -> {
+            context.getSource().sendSuccess(
+                    () -> Component.literal(item.toString()),
+                    true);
+        });
+
+        // 显示数量
+        context.getSource().sendSuccess(
+                () -> Component.literal("wearable count:" + ItemConfig.bannedListCache.size()),
+                true);
+
+        return 1;
+    }
 }
