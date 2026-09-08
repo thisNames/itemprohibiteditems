@@ -17,6 +17,7 @@ license="${mod_license}"
 #clientSideOnly=true #optional - defaults to false if absent
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
+logoFile="logo.png"
 # The modid of the mod
 modId="${mod_id}" #mandatory
 # The version number of the mod
