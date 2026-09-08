@@ -56,7 +56,8 @@ public final class BanClientHandler {
     private static final int RED_COLOR = 0xFFFF0000;
 
     // 兜底提示文本（普通禁用与可穿戴禁用各自配置项为空时的默认值）
-    private static final String DEFAULT_MSG = "NoPermission";
+    private static final String DEFAULT_MSG = "\u4f60\u65e0\u6cd5\u4f7f\u7528\u6b64\u7269\u54c1!";
+    private static final String DEFAULT_WEARABLE_MSG = "\u4f60\u65e0\u6cd5\u7a7f\u6234\u6b64\u7269\u54c1!";
 
     private BanClientHandler() {
     }
@@ -152,7 +153,7 @@ public final class BanClientHandler {
         String text = WearableConfig.WEARABLE.wearableBanMessage.get();
 
         if (text == null || text.isEmpty()) {
-            text = DEFAULT_MSG;
+            text = DEFAULT_WEARABLE_MSG;
         }
 
         armOverlayRaw(text);

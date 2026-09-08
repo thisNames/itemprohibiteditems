@@ -83,7 +83,7 @@ public final class ItemConfig {
             this.banMessage = builder
                     .comment(
                             "Message shown to a player who tries to use a banned item.")
-                    .define("banMessage", "NoPermission");
+                    .define("banMessage", "\u4f60\u65e0\u6cd5\u4f7f\u7528\u6b64\u7269\u54c1!");
 
             builder.pop();
         }

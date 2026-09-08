@@ -93,7 +93,7 @@ public final class WearableConfig {
             this.wearableBanMessage = builder
                     .comment(
                             "Message shown to a player who tries to equip a banned wearable.")
-                    .define("wearableBanMessage", "NoPermission");
+                    .define("wearableBanMessage", "\u4f60\u65e0\u6cd5\u7a7f\u6234\u6b64\u7269\u54c1!");
 
             builder.pop();
         }
