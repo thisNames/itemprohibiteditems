@@ -53,9 +53,6 @@ public final class ItemConfig {
         // 每项为注册表名，格式 "namespace:path"，如 "minecraft:diamond_sword"
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> bannedItems;
 
-        // 尝试使用被禁物品时给玩家显示的提示文本
-        public final ForgeConfigSpec.ConfigValue<String> banMessage;
-
         /**
          * 构造配置
          */
@@ -78,12 +75,6 @@ public final class ItemConfig {
                             List.of("bannedItems"),
                             List.of(),
                             obj -> obj instanceof String s && s.indexOf(':') >= 0);
-
-            // 提示文本
-            this.banMessage = builder
-                    .comment(
-                            "Message shown to a player who tries to use a banned item.")
-                    .define("banMessage", "\u4f60\u65e0\u6cd5\u4f7f\u7528\u6b64\u7269\u54c1!");
 
             builder.pop();
         }

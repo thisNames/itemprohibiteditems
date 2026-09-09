@@ -21,7 +21,8 @@ public final class ModConfig {
 
         // 向发送指令的玩家发送成功提示
         context.getSource().sendSuccess(
-                () -> Component.literal("§a[" + ItemProhibitedItems.MOD_ID + "] reload config success!"),
+                () -> Component.literal("§a[" + ItemProhibitedItems.MOD_ID + "] "
+                        + Component.translatable("command.config.reload.success").getString()),
                 true);
 
         return 1;
@@ -40,7 +41,8 @@ public final class ModConfig {
 
         // 显示数量
         context.getSource().sendSuccess(
-                () -> Component.literal("item count:" + ItemConfig.bannedListCache.size()),
+                () -> Component.literal(Component.translatable("command.config.list.item").getString()
+                        + ItemConfig.bannedListCache.size()),
                 true);
 
         return 1;
@@ -59,7 +61,8 @@ public final class ModConfig {
 
         // 显示数量
         context.getSource().sendSuccess(
-                () -> Component.literal("wearable count:" + ItemConfig.bannedListCache.size()),
+                () -> Component.literal(Component.translatable("command.config.list.wearable").getString()
+                        + ItemConfig.bannedListCache.size()),
                 true);
 
         return 1;

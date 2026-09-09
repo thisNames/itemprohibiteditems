@@ -36,9 +36,6 @@ import com.animator70.itemprohibiteditems.config.WearableConfig;
  */
 @Mod.EventBusSubscriber(modid = ItemProhibitedItems.MOD_ID)
 public final class WearableBanHandler {
-    // 兜底提示文本（配置项为空时的默认值）
-    private static final String DEFAULT_MSG = "NoPermission";
-
     private WearableBanHandler() {
     }
 
@@ -105,13 +102,8 @@ public final class WearableBanHandler {
             player.drop(worn, false);
         }
 
-        String text = WearableConfig.WEARABLE.wearableBanMessage.get();
-
-        if (text == null || text.isEmpty()) {
-            text = DEFAULT_MSG;
-        }
-
-        player.displayClientMessage(Component.literal(text).withStyle(ChatFormatting.RED), true);
+        player.displayClientMessage(Component.literal(Component
+                .translatable("tip.prohibited.wearable").getString()).withStyle(ChatFormatting.RED), true);
     }
 
     /**

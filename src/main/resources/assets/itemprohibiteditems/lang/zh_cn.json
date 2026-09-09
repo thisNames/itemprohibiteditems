@@ -1,0 +1,7 @@
+{
+    "tip.prohibited.item": "你无法使用此物品！",
+    "tip.prohibited.wearable": "你无法装备此物品！",
+    "command.config.reload.success": "配置已成功重载！",
+    "command.config.list.item": "物品禁用数量：",
+    "command.config.list.wearable": "装备禁用数量："
+}

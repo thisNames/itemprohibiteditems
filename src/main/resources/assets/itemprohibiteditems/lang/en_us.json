@@ -1,0 +1,7 @@
+{
+    "tip.prohibited.item": "You cannot use this item",
+    "tip.prohibited.wearable": "You cannot wear this item",
+    "command.config.reload.success": "Config reloaded successfully.",
+    "command.config.list.item": "Item prohibited count:",
+    "command.config.list.wearable": "Wearable prohibited count:"
+}

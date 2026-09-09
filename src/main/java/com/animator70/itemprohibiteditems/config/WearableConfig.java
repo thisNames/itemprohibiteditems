@@ -66,9 +66,6 @@ public final class WearableConfig {
         // 被禁物品仍可持有，但无法穿上。
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> bannedWearables;
 
-        // 尝试穿戴被禁装备时给玩家显示的提示文本（客户端的屏幕红字用）
-        public final ForgeConfigSpec.ConfigValue<String> wearableBanMessage;
-
         /**
          * 构造配置
          */
@@ -89,11 +86,6 @@ public final class WearableConfig {
                             List.of("bannedWearables"),
                             List.of(),
                             obj -> obj instanceof String s && s.indexOf(':') >= 0);
-
-            this.wearableBanMessage = builder
-                    .comment(
-                            "Message shown to a player who tries to equip a banned wearable.")
-                    .define("wearableBanMessage", "\u4f60\u65e0\u6cd5\u7a7f\u6234\u6b64\u7269\u54c1!");
 
             builder.pop();
         }
