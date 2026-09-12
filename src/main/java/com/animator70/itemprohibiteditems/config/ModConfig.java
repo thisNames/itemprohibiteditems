@@ -62,7 +62,7 @@ public final class ModConfig {
         // 显示数量
         context.getSource().sendSuccess(
                 () -> Component.literal(Component.translatable("command.config.list.wearable").getString()
-                        + ItemConfig.bannedListCache.size()),
+                        + WearableConfig.bannedListCache.size()),
                 true);
 
         return 1;
