@@ -51,7 +51,7 @@ public final class ItemConfig {
 
         // 被禁止「使用」的物品 ID 黑名单。
         // 每项为注册表名，格式 "namespace:path"，如 "minecraft:diamond_sword"
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> bannedItems;
+        // public final ForgeConfigSpec.ConfigValue<List<? extends String>> bannedItems;
 
         /**
          * 构造配置
@@ -64,17 +64,17 @@ public final class ItemConfig {
                     .comment("Item Disable Master Switch.")
                     .define("banEnabled", true);
 
-            // 黑名单
-            this.bannedItems = builder
-                    .comment(
-                            "Write the ID of the item here as a blacklist, pay attention to",
-                            "distinguishing between uppercase and lowercase letters as well",
-                            "as spaces before and after. Enter the <mod_id> /reload in the game",
-                            "to refresh the configuration.")
-                    .defineListAllowEmpty(
-                            List.of("bannedItems"),
-                            List.of(),
-                            obj -> obj instanceof String s && s.indexOf(':') >= 0);
+            // // 黑名单
+            // this.bannedItems = builder
+            // .comment(
+            // "Write the ID of the item here as a blacklist, pay attention to",
+            // "distinguishing between uppercase and lowercase letters as well",
+            // "as spaces before and after. Enter the <mod_id> /reload in the game",
+            // "to refresh the configuration.")
+            // .defineListAllowEmpty(
+            // List.of("bannedItems"),
+            // List.of(),
+            // obj -> obj instanceof String s && s.indexOf(':') >= 0);
 
             builder.pop();
         }
@@ -95,6 +95,7 @@ public final class ItemConfig {
     public static void refresh() {
         // 更新开关
         isEnabled = COMMON.banEnabled.get();
-        bannedListCache = Set.copyOf(COMMON.bannedItems.get());
+        // bannedListCache = Set.copyOf(COMMON.bannedItems.get());
+        bannedListCache = JsonBanListReader.getItems();
     }
 }

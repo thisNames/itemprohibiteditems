@@ -64,7 +64,8 @@ public final class WearableConfig {
         // 每项为注册表名，格式 "namespace:path"，如
         // "minecraft:diamond_chestplate"、"minecraft:elytra"，默认空
         // 被禁物品仍可持有，但无法穿上。
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> bannedWearables;
+        // public final ForgeConfigSpec.ConfigValue<List<? extends String>>
+        // bannedWearables;
 
         /**
          * 构造配置
@@ -76,16 +77,16 @@ public final class WearableConfig {
                     .comment("Item Disable Master Switch.")
                     .define("wearableBanEnabled", true);
 
-            this.bannedWearables = builder
-                    .comment(
-                            "Write the ID of the item here as a blacklist, pay attention to",
-                            "distinguishing between uppercase and lowercase letters as well",
-                            "as spaces before and after. Enter the <mod_id> /reload in the game",
-                            "to refresh the configuration.")
-                    .defineListAllowEmpty(
-                            List.of("bannedWearables"),
-                            List.of(),
-                            obj -> obj instanceof String s && s.indexOf(':') >= 0);
+            // this.bannedWearables = builder
+            // .comment(
+            // "Write the ID of the item here as a blacklist, pay attention to",
+            // "distinguishing between uppercase and lowercase letters as well",
+            // "as spaces before and after. Enter the <mod_id> /reload in the game",
+            // "to refresh the configuration.")
+            // .defineListAllowEmpty(
+            // List.of("bannedWearables"),
+            // List.of(),
+            // obj -> obj instanceof String s && s.indexOf(':') >= 0);
 
             builder.pop();
         }
@@ -106,6 +107,7 @@ public final class WearableConfig {
      */
     public static void refresh() {
         isEnabled = WEARABLE.wearableBanEnabled.get();
-        bannedListCache = Set.copyOf(WEARABLE.bannedWearables.get());
+        // bannedListCache = Set.copyOf(WEARABLE.bannedWearables.get());
+        bannedListCache = JsonBanListReader.getWearables();
     }
 }
